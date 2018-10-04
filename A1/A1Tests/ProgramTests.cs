@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using TestCommon;
 
 namespace A1.Tests
 {
@@ -21,10 +22,10 @@ namespace A1.Tests
         }
 
         [TestMethod(), Timeout(1000)]
-        [DeploymentItem("TestData", "TestData")]
+        [DeploymentItem("TestData", "A1_TestData")]
         public void GradedTest()
         {
-            TestTools.RunLocalTest(Program.Process);
+            TestTools.RunLocalTest("A1", Program.Process);
         }
     }
 }
