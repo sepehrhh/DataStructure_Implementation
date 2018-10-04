@@ -33,7 +33,7 @@ namespace A2.Tests
             while (DateTime.Now.Subtract(startTime).Seconds < 5)
             {
                 Random random = new Random();
-                int numbersLength = random.Next(2, 10);
+                int numbersLength = random.Next(2, 20);
                 List<int> numbers = new List<int>();
                 for(int i = 0; i < numbersLength; i++)
                     numbers.Add(random.Next(10000));
