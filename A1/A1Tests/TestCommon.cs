@@ -6,19 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace A1.Tests
+namespace TestCommon
 {
     public class TestTools
     {
         private static readonly char[] IgnoreChars = new char[] { '\n', '\r', ' ' };
 
-        public static void RunLocalTest(Func<string, string> Processor)
+        public static void RunLocalTest(string AssignmentName, Func<string, string> Processor, string TestDataName = null)
         {
-            Assert.IsTrue(Directory.Exists("TestData"));
-            string[] inFiles = Directory.GetFiles("TestData", "*In_*.txt");
+            string testDataPath = $"{AssignmentName}_TestData";
+            if (!string.IsNullOrEmpty(TestDataName))
+                testDataPath = Path.Combine(testDataPath, TestDataName);
+
+            Assert.IsTrue(Directory.Exists(testDataPath));
+            string[] inFiles = Directory.GetFiles(testDataPath, "*In_*.txt");
 
             Assert.IsTrue(inFiles.Length > 0 &&
-                Directory.GetFiles("TestData").Length % 2 == 0);
+                Directory.GetFiles(testDataPath).Length % 2 == 0);
 
             List<string> failedTests = new List<string>();
             foreach (var inFile in inFiles)

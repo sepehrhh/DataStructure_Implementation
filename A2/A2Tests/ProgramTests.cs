@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestCommon;
 
 namespace A2.Tests
 {
@@ -12,17 +13,17 @@ namespace A2.Tests
     public class ProgramTests
     {
         [TestMethod()]
-        [DeploymentItem("TestData", "TestData")]
+        [DeploymentItem("TestData", "A2_TestData")]
         public void GradedTest_Correctness()
         {
-            TestCommon.TestTools.RunLocalTest(Program.Process);
+            TestTools.RunLocalTest("A2", Program.Process);
         }
 
         [TestMethod(), Timeout(500)]
-        [DeploymentItem("TestData", "TestData")]
+        [DeploymentItem("TestData", "A2_TestData")]
         public void GradedTest_Performance()
         {
-            TestCommon.TestTools.RunLocalTest(Program.Process);
+            TestTools.RunLocalTest("A2", Program.Process);
         }
 
         [TestMethod()]
