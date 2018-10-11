@@ -45,7 +45,7 @@ namespace A3
         {
             List<int> fiboNumsLastDigit = new List<int>() { 0, 1};
             for (int i = 2; i < n + 1; i++)
-                fiboNumsLastDigit.Add((fiboNumsLastDigit[i - 2] % 10 + fiboNumsLastDigit[i - 1] % 10) % 10);
+                fiboNumsLastDigit.Add((fiboNumsLastDigit[i - 2] + fiboNumsLastDigit[i - 1]) % 10);
             return fiboNumsLastDigit[(int)n];
         }
 
@@ -178,13 +178,13 @@ namespace A3
             {
                 n %= pisanoNum;
                 m %= pisanoNum;
-                return ((Fibonacci(n + 2) - 1) % 10 - (Fibonacci(m + 2) - 1) % 10 + Fibonacci(m)) % 10;
+                return ((Fibonacci_LastDigit(n + 2) - 1) - (Fibonacci_LastDigit(m + 2) - 1) + Fibonacci_LastDigit(m)) % 10;
             }
             else
             {
                 n %= pisanoNum;
                 m %= pisanoNum;
-                return ((Fibonacci(m + 2) - 1) % 10 - (Fibonacci(n + 2) - 1) % 10 + Fibonacci(n)) % 10;
+                return ((Fibonacci_LastDigit(m + 2) - 1) - (Fibonacci_LastDigit(n + 2) - 1) + Fibonacci_LastDigit(n)) % 10;
             }
         }
 
