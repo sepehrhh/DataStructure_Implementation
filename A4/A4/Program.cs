@@ -230,44 +230,26 @@ namespace A4
         {
             List<string> numbersList = new List<string>();
             List<string> sortedList = new List<string>();
-            string answer = null;
             foreach (var i in numbers)
                 numbersList.Add(i.ToString());
-            var resultList = numbersList.GroupBy(x => x[0]).OrderByDescending(x => x.Key);
-            foreach(var group in resultList)
-            {
-                var groupList = group.ToList();
-                var groupCount = groupList.Count;
-                Action RunLoop = delegate
-                {
-                    var max = groupList.OrderByDescending(v => int.Parse(v)).First();
-                    foreach (var num in groupList.Where(x => x.Length < max.Length).
-                        OrderByDescending(x => x.Select(y => (int)y).Sum() / x.Length))
-                    {
-                        if (long.Parse(num + max) > long.Parse(max + num))
-                        {
-                            max = num;
-                            sortedList.Add(max);
-                            groupList.Remove(max);
-                            return;
-                        }
-                    }
-                    sortedList.Add(max);
-                    groupList.Remove(max);
-                    if (groupList.Count == 1)
-                    {
-                        sortedList.Add(groupList[0]);
-                        return;
-                    }
-                };
-                while (sortedList.Count < groupCount)
-                    RunLoop();
-
-                answer += String.Join("", sortedList);
-                sortedList.Clear();
-            }
             
-            return answer; 
+            var running = true;
+            while (running)
+            {
+                var max = numbersList.OrderByDescending(x => int.Parse(x)).First();
+                foreach (var num in numbersList)
+                {
+                    if (long.Parse(num + max) > long.Parse(max + num))
+                    {
+                        max = num;
+                    }
+                }
+                sortedList.Add(max);
+                numbersList.Remove(max);
+                if (sortedList.Count == numbers.Length)
+                    running = false;
+            }
+            return String.Join("", sortedList); 
         }
 
         /// <summary>
