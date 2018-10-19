@@ -11,7 +11,7 @@ namespace A4
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine(MaximizeSalary6(3, new long[] { 84, 891, 885 }));
+            MaximizeSalary6(2, new long[] { 12, 21 });
         }
 
         /// <summary>
@@ -22,21 +22,7 @@ namespace A4
         /// <returns></returns>
         public static long ChangingMoney1(long money)
         {
-            long moneyNum = 0;
-            do
-            {
-                if (money - 10 >= 0)
-                    money -= 10;
-                else
-                {
-                    if (money - 5 >= 0)
-                        money -= 5;
-                    else
-                        money -= 1;
-                }
-                moneyNum++;
-            } while (money != 0);
-            return moneyNum;
+            return money / 10 + (money % 10) / 5 + money % 5;
         }
 
         /// <summary>
@@ -59,12 +45,11 @@ namespace A4
         public static long MaximizingLoot2(
             long capacity, long[] weights, long[] values)
         {
+            var density = weights.Zip(values, (weight, value) => (float)value / (float)weight).ToList();
             float maxValue = 0;
-            List<float> density = new List<float>();
-            for (int i = 0; i < values.Length; i++)
-                density.Add((float)values[i] / (float)weights[i]);
             var maxDensityIndex = 0;
-            do
+
+            while (true)
             {
                 maxDensityIndex = density.IndexOf(density.Max());
                 if (weights[maxDensityIndex] < capacity)
@@ -75,11 +60,10 @@ namespace A4
                 else
                 {
                     maxValue += density[maxDensityIndex] * capacity;
-                    capacity = 0;
+                    return (long)maxValue;
                 }
                 density[maxDensityIndex] = -1;
-            } while (capacity != 0);
-            return (long)maxValue;
+            }
         }
 
         /// <summary>
@@ -102,20 +86,8 @@ namespace A4
         public static long MaximizingOnlineAdRevenue3(long slotCount,
             long[] adRevenue, long[] averageDailyClick)
         {
-            var averageDailyClickList = averageDailyClick.ToList();
-            var adRevenueList = adRevenue.ToList();
-            long averageDailyClickMax;
-            long adRevenueMax;
-            List<long> revenue = new List<long>();
-            for (int i = 0; i < slotCount; i++)
-            {
-                averageDailyClickMax = averageDailyClickList.Max();
-                adRevenueMax = adRevenueList.Max();
-                averageDailyClickList.Remove(averageDailyClickMax);
-                adRevenueList.Remove(adRevenueMax);
-                revenue.Add(averageDailyClickMax * adRevenueMax);
-            }
-            return revenue.Sum();
+            return adRevenue.OrderByDescending(x => x).Zip(averageDailyClick.OrderByDescending(x => x),
+                (revenue, dailyClick) => revenue * dailyClick).Sum();
         }
 
         /// <summary>
@@ -179,35 +151,15 @@ namespace A4
             List<long> resultNums = new List<long>();
             long result = 0;
             long i = 1;
-            while (i <= n)
+            while (n - (result + i) > i && result != n)
             {
-                if (n - (result + i) > i)
-                {
-                    resultNums.Add(i);
-                    result += i;
-                    if (result == n)
-                        return resultNums.ToArray();
-                }
-
-                else
-                {
-                    if (resultNums.Count > 0)
-                    {
-                        resultNums.Add(n - result);
-                        return resultNums.ToArray();
-                    }
-                }
-
-                if (n == i)
-                {
-                    resultNums.Add(i);
-                    return resultNums.ToArray();
-                }
+                resultNums.Add(i);
+                result += i;
                 i++;
             }
+            resultNums.Add(n - result);
 
-
-            return new long[] { 0 };
+            return resultNums.ToArray();
         }
 
         /// <summary>
@@ -228,27 +180,22 @@ namespace A4
         /// <returns></returns>
         public static string MaximizeSalary6(long n, long[] numbers)
         {
-            List<string> numbersList = new List<string>();
             List<string> sortedList = new List<string>();
-            foreach (var i in numbers)
-                numbersList.Add(i.ToString());
-            
+            var numbersList = numbers.Select(x => x.ToString()).ToList();
             var running = true;
+
             while (running)
             {
                 var max = numbersList.OrderByDescending(x => int.Parse(x)).First();
                 foreach (var num in numbersList)
-                {
                     if (long.Parse(num + max) > long.Parse(max + num))
-                    {
                         max = num;
-                    }
-                }
                 sortedList.Add(max);
                 numbersList.Remove(max);
                 if (sortedList.Count == numbers.Length)
                     running = false;
             }
+
             return String.Join("", sortedList); 
         }
 
