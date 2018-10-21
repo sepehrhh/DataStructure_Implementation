@@ -206,6 +206,6 @@ namespace A4
         /// <param name="inStr"></param>
         /// <returns></returns>
         public static string ProcessMaximizeSalary6(string inStr) =>
-            TestTools.Process(inStr, MaximizeSalary6);
+            TestTools.Process(inStr, (Func<long, long[], string>)MaximizeSalary6);
     }
 }
