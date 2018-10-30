@@ -66,26 +66,28 @@ namespace A5
         /// <returns></returns>
         public static long MajorityElement2(long n, long[] a)
         {
-            return FindMajority(a);
+            return FindMajority(a).Item1;
         }
 
-        private static long FindMajority(long[] nums)
+        private static (int, long) FindMajority(long[] nums)
         {
             if (nums.Length == 2)
                 if (nums[0] == nums[1])
-                    return 1;
+                    return (1, nums[0]);
                 else
-                    return 0;
+                    return (0, 0);
             else if (nums.Length == 1)
-                return 0;
+                return (0, 0);
             var numsFirstHalve = nums.Take(nums.Length / 2).ToArray();
             var numsSecondHalve = nums.Skip(nums.Length / 2).ToArray();
             var element1 = FindMajority(numsFirstHalve);
             var element2 = FindMajority(numsSecondHalve);
-            if (element1 == 1 || element2 == 1)
-                return 1;
+            if (element1.Item1 == 1 && (numsSecondHalve.Contains(element1.Item2) || nums.Length % 2 != 0))
+                return (1, element1.Item2);
+            else if (element2.Item1 == 1 && (numsFirstHalve.Contains(element2.Item2) || nums.Length % 2 != 0))
+                return (1, element2.Item2);
             else
-                return 0;
+                return (0, 0);
         }
 
         /// <summary>
@@ -139,9 +141,8 @@ namespace A5
                     m1++;
                     if (m2 <= m1)
                         m2++;
-                    continue;
                 }
-                if (array[i] == pivot && m2 != array.Length - 1)
+                else if (array[i] == pivot && m2 != array.Length - 1)
                 {
                     (array[i], array[m2 + 1]) = (array[m2 + 1], array[i]);
                     if (secondArray != null)
@@ -171,8 +172,7 @@ namespace A5
         /// <returns></returns>
         public static long NumberofInversions4(long n, long[] a)
         {
-            var result = MergeSort(a.ToList());
-            return result.Item2;
+            return MergeSort(a.ToList()).Item2;
         }
 
         private static (List<long>, long) MergeSort(List<long> a)
@@ -198,21 +198,16 @@ namespace A5
             int i = 0, j = 0;
             while (i < leftList.Count && j < rightList.Count)
             {
-                if (leftList[i] < rightList[j])
+                if (leftList[i] <= rightList[j])
                 {
                     sortedList.Add(leftList[i]);
                     i++;
                 }
-                else if (leftList[i] > rightList[j])
+                else
                 {
                     sortedList.Add(rightList[j]);
                     inversions += leftList.Count() - i;
                     j++;
-                }
-                else
-                {
-                    sortedList.Add(leftList[i]);
-                    i++;
                 }
             }
             if (i < leftList.Count)
