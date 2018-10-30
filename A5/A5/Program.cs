@@ -55,7 +55,7 @@ namespace A5
         /// <param name="inStr"></param>
         /// <returns></returns>
         public static string ProcessBinarySearch1(string inStr) =>
-            TestTools.Process(inStr, BinarySearch1);
+            TestTools.Process(inStr, (Func<long[], long[], long[]>)BinarySearch1);
 
         /// <summary>
         /// Majority Element
@@ -285,7 +285,7 @@ namespace A5
         /// <param name="inStr"></param>
         /// <returns></returns>
         public static string ProcessOrganizingLottery5(string inStr) =>
-            TestTools.Process(inStr,OrganizingLottery5);
+            TestTools.Process(inStr, (Func<long[], long[], long[], long[]>)OrganizingLottery5);
         
 
         /// <summary>
