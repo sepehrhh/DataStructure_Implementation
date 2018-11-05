@@ -16,32 +16,42 @@ namespace Q1
         public static string[] GetCandidates(string word)
         {
             List<string> candidates = new List<string>();
-            //TODO
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                candidates.Add(Delete(word, i));
+                foreach (var j in Alphabet)
+                {
+                    candidates.Add(Insert(word, i, j));
+                    if (i == word.Length - 1)
+                        candidates.Add(Insert(word, i + 1, j));
+                    candidates.Add(Substitute(word, i, j));
+                }
+            }
+
             return candidates.ToArray();
         }
 
         private static string Insert(string word, int pos, char c)
         {
             char[] wordChars = word.ToCharArray();
-            char[] newWord = new char[wordChars.Length+1];
-            //TODO
-            return new string(newWord);
+            var newWord = word.Insert(pos, c.ToString());
+            return newWord;
         }
 
         private static string Delete(string word, int pos)
         {
             char[] wordChars = word.ToCharArray();
-            char[] newWord = new char[wordChars.Length-1];
-            //TODO
-            return new string(newWord);
+            var newWord = word.Remove(pos, 1);
+            return newWord;
         }
 
         private static string Substitute(string word, int pos, char c)
         {
             char[] wordChars = word.ToCharArray();
-            char[] newWord = new char[wordChars.Length];
-            //TODO
-            return new string(newWord);
+            var newWord = word.Remove(pos, 1);
+            newWord = newWord.Insert(pos, c.ToString());
+            return newWord;
         }
 
     }

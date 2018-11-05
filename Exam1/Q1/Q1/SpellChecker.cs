@@ -20,7 +20,19 @@ namespace Q1
             List<WordCount> candidates = 
                 new List<WordCount>();
 
-            // TODO
+            var generatedCandidates = CandidateGenerator.
+                GetCandidates(misspelling).ToList();
+
+            ulong count = 0;
+            foreach (var i in generatedCandidates)
+            {
+                count = 0;
+                if (LanguageModel.GetCount(i, out count))
+                {
+                    var newWord = new WordCount(i, count);
+                    candidates.Add(newWord);
+                }
+            }
 
             return candidates
                     .OrderByDescending(x => x.Count)
@@ -63,7 +75,11 @@ namespace Q1
             {
                 for (int i = 1; i <= n; i++)
                 {
-                    // TODO
+                    if (str1[i] == str2[j])
+                        Distance[i, j] = Distance[i - 1, j - 1];
+                    else
+                        Distance[i, j] = Math.Min(Distance[i - 1, j - 1] + 1,
+                            Math.Min(Distance[i, j - 1], Distance[i - 1, j]));
                 }
             }
             return Distance[n, m];
