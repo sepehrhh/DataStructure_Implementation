@@ -16,28 +16,28 @@ namespace A6
 
         public long Solve(long[] seq1, long[] seq2)
         {
-            int n = seq1.Length;
-            int m = seq2.Length;
-            var lengthTable = new long[m + 1, n + 1];
+            return LCS(seq1, seq2, seq1.Length, seq2.Length); ;
+        }
 
-            for (int i = 0; i < m + 1; i++)
-                for (int j = 0; j < n + 1; j++)
+        private static long LCS(long[] seq1, long[] seq2, int length1, int length2)
+        {
+            var LCSTable = new long[length1 + 1, length2 + 1];
+
+            for (int i = 0; i < length1 + 1; i++)
+                for (int j = 0; j < length2 + 1; j++)
                 {
-                    if (i == 0)
-                        lengthTable[i, j] = 0;
+                    if (i == 0 || j == 0)
+                        LCSTable[i, j] = 0;
 
-                    else if (j == 0)
-                        lengthTable[i, j] = 0;
-
-                    else if (seq1[j - 1] == seq2[i - 1])
-                        lengthTable[i, j] = lengthTable[i - 1, j - 1];
+                    else if (seq1[i - 1] == seq2[j - 1])
+                        LCSTable[i, j] = LCSTable[i - 1, j - 1] + 1;
 
                     else
-                        lengthTable[i, j] = Math.Min(lengthTable[i, j - 1] + 1,
-                            Math.Min(lengthTable[i - 1, j] + 1,
-                            lengthTable[i - 1, j - 1] + 1));
+                        LCSTable[i, j] = Math.Max(LCSTable[i, j - 1],
+                            LCSTable[i - 1, j]);
                 }
-            return 0;
+
+            return LCSTable[length1, length2];
         }
     }
 }

@@ -20,8 +20,8 @@ namespace A6.Tests
                 new MoneyChange("TD1"),
                 new PrimitiveCalculator("TD2"),
                 new EditDistance("TD3"),
-                new LCSOfTwo("TD4")//,
-                //new LCSOfThree("TD5")
+                new LCSOfTwo("TD4"),
+                new LCSOfThree("TD5")
             };
 
             foreach(var p in problems)

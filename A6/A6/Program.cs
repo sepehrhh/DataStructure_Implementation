@@ -10,8 +10,6 @@ namespace A6
     {
         public static void Main(string[] args)
         {
-            var e = new EditDistance("");
-            e.Solve("short", "ports");
         }
     }
 }
