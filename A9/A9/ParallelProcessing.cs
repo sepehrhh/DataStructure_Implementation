@@ -25,58 +25,19 @@ namespace A9
 
         public Tuple<long, long>[] Solve(long threadCount, long[] jobDuration)
         {
-            var threadsQueue = new Queue<Thread>((int)threadCount);
+            var threadsQueue = new List<Thread>((int)threadCount);
             for (int i = 0; i < threadCount; i++)
-                threadsQueue.Enqueue(new Thread(i));
-            var threadsList = new List<Thread>();
+                threadsQueue.Add(new Thread(i));
             var result = new List<Tuple<long, long>>();
 
             for (int i = 0; i < jobDuration.Length; i++)
             {
-                if (threadsQueue.Count != 0)
-                {
-                    Thread peekThread = null;
-                    if (threadsList.Count != 0)
-                    {
-                        if (threadsList.First().StartTime < threadsQueue.Peek().StartTime)
-                        {
-                            peekThread = threadsList.First();
-                            threadsList.RemoveAt(0);
-                        }
-                        else if (threadsList.First().StartTime == threadsQueue.Peek().StartTime)
-                        {
-                            if (threadsList.First().Index < threadsQueue.Peek().Index)
-                            {
-                                peekThread = threadsList.First();
-                                threadsList.RemoveAt(0);
-                            }
-                            else
-                                peekThread = threadsQueue.Dequeue();
-                        }
-                        else
-                            peekThread = threadsQueue.Dequeue();
-                    }
-                    else
-                        peekThread = threadsQueue.Dequeue();
-
-                    result.Add(new Tuple<long, long>(peekThread.Index, peekThread.StartTime));
-                    peekThread.StartTime += jobDuration[i];
-                    threadsList.Add(peekThread);
-                    threadsList = threadsList.OrderBy(x => x.StartTime).ThenBy(x => x.Index).ToList();
-                }
-                else
-                {
-                    for (int j = 0; j < threadCount; j++)
-                    {
-                        threadsQueue.Enqueue(threadsList.First());
-                        threadsList.RemoveAt(0);
-                    }
-                    var peekThread = threadsQueue.Dequeue();
-                    result.Add(new Tuple<long, long>(peekThread.Index, peekThread.StartTime));
-                    peekThread.StartTime += jobDuration[i];
-                    threadsList.Add(peekThread);
-                    threadsList = threadsList.OrderBy(x => x.StartTime).ToList();
-                }
+                var peekThread = threadsQueue.First();
+                threadsQueue.RemoveAt(0);
+                result.Add(new Tuple<long, long>(peekThread.Index, peekThread.StartTime));
+                peekThread.StartTime += jobDuration[i];
+                threadsQueue.Add(peekThread);
+                threadsQueue = threadsQueue.OrderBy(x => x.StartTime).ThenBy(x => x.Index).ToList();
             }
             
             return result.ToArray();

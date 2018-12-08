@@ -10,10 +10,8 @@ namespace A9
     {
         public static void Main(string[] args)
         {
-            var problem = new MergingTables("");
-            problem.Solve(new long[] { 10, 0, 5, 0, 3, 3 },
-                new long[] { 6, 5, 4, 3 },
-                new long[] { 6, 6, 5, 4 });
+            var problem = new ParallelProcessing("");
+            problem.Solve(2, new long[] { 1, 2, 3, 4, 5});
         }
     }
 }

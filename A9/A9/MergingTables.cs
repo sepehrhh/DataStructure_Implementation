@@ -21,7 +21,7 @@ namespace A9
             for (int i = 0; i < sourceTables.Length; i++)
             {
                 disjointSet.Union((int)sourceTables[i] - 1, (int)targetTables[i] - 1);
-                result.Add(disjointSet.SizeOfSet.Max());
+                result.Add(disjointSet.MaxSizeOfSet);
             }
             return result.ToArray();
         }
@@ -33,12 +33,14 @@ namespace A9
         private int Count { get; set; }
         private readonly int[] Parent;
         public int[] SizeOfSet;
+        public long MaxSizeOfSet;
 
         public DisjointSet(long[] setsSizes)
         {
             this.Count = setsSizes.Length;
             this.Parent = new int[this.Count];
             this.SizeOfSet = new int[this.Count];
+            this.MaxSizeOfSet = setsSizes.Max();
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -52,10 +54,7 @@ namespace A9
             if (this.Parent[i] == i)
                 return i;
             else
-            {
-                this.Parent[i] = this.Find(this.Parent[i]);
-                return this.Parent[i];
-            }
+                return this.Find(this.Parent[i]);
         }
 
         public void Union(int source, int target)
@@ -68,6 +67,8 @@ namespace A9
 
             this.Parent[sourceParent] = targetParent;
             this.SizeOfSet[targetParent] += this.SizeOfSet[sourceParent];
+            if (this.SizeOfSet[targetParent] > this.MaxSizeOfSet)
+                this.MaxSizeOfSet = this.SizeOfSet[targetParent];
             this.SizeOfSet[source] = 0;
         }
 
