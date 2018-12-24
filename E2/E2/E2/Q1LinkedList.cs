@@ -45,14 +45,23 @@ namespace E2
 
         public void Reverse()
         {
-            // زحمت بکشید پیاده سازی کنید
-            // اگر نیاز بود میتوانید متد اضافه کنید
+            Recursive(Head);
+            (Head, Tail) = (Tail, Head);
+        }
+
+        public void Recursive(Node node)
+        {
+            if (node == null)
+                return;
+            (node.Next, node.Prev) = (node.Prev, node.Next);
+            Recursive(node.Prev);
         }
 
         public void DeepReverse()
         {
-            // زحمت بکشید پیاده سازی کنید
-            // اگر نیاز بود میتوانید متد اضافه کنید
+            
+
+
         }
 
         public IEnumerable<int> GetForwardEnumerator()

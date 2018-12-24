@@ -14,7 +14,6 @@ namespace E2.Tests
         [TestMethod()]
         public void ReverseTest()
         {
-            Assert.Inconclusive("Not Implemented");
             Random rnd = new Random(0);
 
             for (int testIteration = 0; testIteration < 10; testIteration++)
