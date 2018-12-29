@@ -10,8 +10,7 @@ namespace E2
     {
         public static void Main(string[] args)
         {
-            Q4TreeDiameter q4 = new Q4TreeDiameter(10);
-            q4.TreeHeightFromNode(6);
+            Q2BitCoin q = new Q2BitCoin();
         }
     }
 }

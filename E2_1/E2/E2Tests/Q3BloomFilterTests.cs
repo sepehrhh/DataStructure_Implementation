@@ -14,15 +14,14 @@ namespace E2.Tests
         [TestMethod()]
         public void BloomFilterTest()
         {
-            Assert.Inconclusive("Not Implemented");
             // تعداد پسوردها - ثابت. عوض نکنید.
             int pwdCount = 1_000_000;
 
             // اندازه مناسب را خودتون انتخاب کنید
-            int filterSize =(5 * pwdCount);
+            int filterSize =5_700_000;
 
             // تعداد توابع را هم خودتان تنظیم کنید
-            int hashFnCount = 3;
+            int hashFnCount = 7;
 
             Q3BloomFilter filter = new Q3BloomFilter(filterSize, hashFnCount);
             HashSet<string> passwords = new HashSet<string>();
@@ -38,6 +37,8 @@ namespace E2.Tests
                 passwords.Add(pwd);
             }
 
+            //var MAKHRAJ = (passwords.Sum(x => x.Length * 8));
+
             // تمام پسوردهای اضافه شده باید حتما جواب مثبت بدهند
             foreach (string pwd in passwords)
             {
@@ -51,7 +52,7 @@ namespace E2.Tests
                 bool trueAnswer = passwords.Contains(pwd);
 
                 // اگر فیلتر بگه توی لیست نیست، ولی واقعا باشه که کلا اشتباه شده
-                Assert.IsTrue(!filterAnswer && trueAnswer);
+                Assert.IsFalse(!filterAnswer && trueAnswer);
 
                 // اگر فیلتر بگه توی لیست هست ولی واقعا نباشه میشه falsePositive
                 if (!trueAnswer && filterAnswer)

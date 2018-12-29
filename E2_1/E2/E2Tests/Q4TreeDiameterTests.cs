@@ -14,13 +14,6 @@ namespace E2.Tests
         public Q4TreeDiameter q4 = new Q4TreeDiameter(10);
 
         [TestMethod()]
-        public void Q4TreeDiameterTest()
-        {
-            Assert.Inconclusive();
-            Q4TreeDiameter td = new Q4TreeDiameter(10, 0);
-        }
-
-        [TestMethod()]
         public void TreeHeightTest()
         {
             var height = q4.TreeHeight(0);
@@ -30,20 +23,28 @@ namespace E2.Tests
         [TestMethod()]
         public void TreeHeightFromNodeTest()
         {
-            var height = q4.TreeHeightFromNode(6);
+            var height = q4.TreeHeightFromNode(3);
             Assert.AreEqual(5, height);
+            height = q4.TreeHeightFromNode(5);
+            Assert.AreEqual(6, height);
+            height = q4.TreeHeightFromNode(6);
+            Assert.AreEqual(5, height);
+            height = q4.TreeHeightFromNode(7);
+            Assert.AreEqual(4, height);
         }
 
         [TestMethod()]
         public void TreeDiameterN2Test()
         {
-            Assert.Inconclusive();
+            var diameter = q4.TreeDiameterN2();
+            Assert.AreEqual(6, diameter);
         }
 
         [TestMethod()]
         public void TreeDiameterNTest()
         {
-            Assert.Inconclusive();
+            var diameter = q4.TreeDiameterN2();
+            Assert.AreEqual(6, diameter);
         }
     }
 }
