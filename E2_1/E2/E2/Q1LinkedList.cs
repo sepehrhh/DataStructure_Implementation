@@ -59,9 +59,18 @@ namespace E2
 
         public void DeepReverse()
         {
-            
-
-
+            Node prev = null;
+            Node curr = Head;
+            Node next = null;
+            while (curr != null)
+            {
+                next = curr.Next;
+                curr.Next = prev;
+                curr.Prev = next;
+                prev = curr;
+                curr = next;
+            }
+            (Head, Tail) = (Tail, Head);
         }
 
         public IEnumerable<int> GetForwardEnumerator()

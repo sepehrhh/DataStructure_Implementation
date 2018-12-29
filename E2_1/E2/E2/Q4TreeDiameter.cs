@@ -22,6 +22,8 @@ namespace E2
         public int TreeHeight(int root)
         {
             var childsList = Nodes[root];
+            if (Nodes[root] == null)
+                return 1;
             var heights = new int[Nodes[root].Count];
             for (int i = 0; i < heights.Length; i++)
                 heights[i] += 2;
@@ -31,7 +33,7 @@ namespace E2
                     heights[childsList.IndexOf(node)] += GetHeight(Nodes[node]);
             }
 
-            return heights.Count() > 0 ? heights.Max() : 1;
+            return heights.Max();
         }
 
         public int GetHeight(List<int> list)
@@ -49,18 +51,21 @@ namespace E2
 
         public int TreeHeightFromNode(int node)
         {
-            var zeroRoot = new List<int>();
-            for (int i = 0; i < Nodes.Length; i++)
-            {
-                if (Nodes[i].Contains(node))
-                {
-                    Nodes[i].Remove(node);
-                    Nodes[node].Add(i);
-                }
-            }
-                
-
+            if (Nodes.Count(x => x.Contains(node)) > 0)
+                RotateTree(Array.IndexOf(Nodes, Nodes.Where(x => x.Contains(node)).First()), node);
             return TreeHeight(node);
+        }
+
+        private void RotateTree(int parent, int child)
+        {
+            Nodes[parent].Remove(child);
+            Nodes[child].Add(parent);
+            for (int i = 0; i < Nodes.Length; i++)
+                if (Nodes[i].Contains(parent) && i != child)
+                {
+                    RotateTree(i, parent);
+                    break;
+                }
         }
 
         public int TreeDiameterN2()
@@ -73,7 +78,32 @@ namespace E2
 
         public int TreeDiameterN()
         {
-            return 0;
+            var diameters = new List<int>();
+            for (int i = 0; i < Nodes.Length; i++)
+                diameters.Add(TreeHeightFromNodeDP(i));
+
+            return diameters.Max();
+        }
+
+        private int TreeHeightFromNodeDP(int node)
+        {
+            var height = 1;
+            if (Nodes.Count(x => x.Contains(node)) > 0)
+                RotateTreeDP(Array.IndexOf(Nodes, Nodes.Where(x => x.Contains(node)).First()), node, ref height);
+            return height;
+        }
+
+        private void RotateTreeDP(int parent, int child, ref int height)
+        {
+            Nodes[parent].Remove(child);
+            Nodes[child].Add(parent);
+            for (int i = 0; i < Nodes.Length; i++)
+                if (Nodes[i].Contains(parent) && i != child)
+                {
+                    height++;
+                    RotateTreeDP(i, parent, ref height);
+                    break;
+                }
         }
 
         private static List<int>[] GenerateRandomTree(int size, int seed)

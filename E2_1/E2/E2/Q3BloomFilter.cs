@@ -8,34 +8,56 @@ namespace E2
     {
         BitArray Filter;
         Func<string, int>[] HashFunctions;
+        int FilterSize;
 
         public Q3BloomFilter(int filterSize, int hashFnCount)
         {
-            // زحمت بکشید پیاده سازی کنید
-
+            FilterSize = filterSize;
             Random rnd = new Random();
             Filter = new BitArray(filterSize);
             HashFunctions = new Func<string, int>[hashFnCount];
+            var randomHashNums = new int[hashFnCount];
+            for (int i = 0; i < hashFnCount; i++)
+                randomHashNums[i] = rnd.Next();
 
             for (int i = 0; i < HashFunctions.Length; i++)
             {
-                HashFunctions[i] = str => MyHashFunction(str, rnd.Next());
+                var num = randomHashNums[i];
+                HashFunctions[i] = str => MyHashFunction(str, num);
             }
         }
 
         public int MyHashFunction(string str, int num)
         {
-            return str.GetHashCode() + num;
+            long sigmaVal = 0;
+            long powerVal = 1;
+            for (int i = 0; i < str.Length; i++)
+            {
+                sigmaVal += (str[i] * powerVal) % FilterSize;
+                powerVal *= num;
+                powerVal %= FilterSize;
+            }
+            return (int)sigmaVal % FilterSize;
         }
 
         public void Add(string str)
         {
-            // زحمت بکشید پیاده سازی کنید
+            foreach (var hashFunc in HashFunctions)
+            {
+                var idx = hashFunc(str);
+                Filter[idx] = true;
+                var check = Filter[idx];
+            }
         }
 
         public bool Test(string str)
         {
-            // زحمت بکشید پیاده سازی کنید
+            foreach (var hashFunc in HashFunctions)
+            {
+                var idx = hashFunc(str);
+                if (!Filter[idx])
+                    return false;
+            }
             return true;
         }
     }
