@@ -56,8 +56,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BSTTests.cs" />
     <Compile Include="GradedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SplayTreeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

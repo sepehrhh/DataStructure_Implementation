@@ -13,7 +13,19 @@ namespace A11
 
         public bool Solve(long[][] nodes)
         {
-            return false;
+            var Tree = new BinaryTree(nodes);
+            return IsBST(Tree.Root, int.MinValue, int.MaxValue);
+        }
+
+        public bool IsBST(Node node, int min, int max)
+        {
+            if (node == null)
+                return true;
+
+            if (node.Key < min || node.Key > max)
+                return false;
+
+            return (IsBST(node.Left, min, (int)node.Key - 1) && IsBST(node.Right, (int)node.Key, max));
         }
     }
 }
